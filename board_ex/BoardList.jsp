@@ -12,9 +12,35 @@
 <%
 // 전체 메세지 레코드 검색
 
+String pNum = request.getParameter("page");
+
 ListArticleService service = ListArticleService.getInstance();
-List <BoardVO> mList =  service.getArticleList();
- 
+List <BoardVO> mList =  service.getArticleList(pNum);
+
+int pageCount = 5;
+
+	if(pNum == null)
+		pNum = "1";
+	// 페이지수가 없을경우 1페이지로 인식함
+	int pageNum = Integer.parseInt(pNum);
+ 	// pNum을 int형으로 형변환
+	if(pageNum < 1)
+		response.sendRedirect("BoardList.jsp?page=1");
+	// 페이지가 음수로 넘어갈 경우 1페이지로 리다이렉트
+	
+	int maxPage = (int)Math.ceil((double)pageNum / (double)pageCount)*pageCount;
+	// 현재 페이지의 최대 페이지 지정 (현재 페이지를 pageCount의 배수로 변환)
+	int minPage = maxPage-(pageCount-1);
+	// 현재 페이지의 최소 페이지 지정
+	int totalPage = service.getTotalCount();
+	// 전체 최대 페이지수를 가져옴
+	if(maxPage > totalPage)
+		maxPage = totalPage;
+	// 현재 최대 페이지 수가 전체 최대 페이지수를 넘을 경우 현재 최대 페이지를 전체 최대 페이지로 변경
+	if(pageNum > totalPage)
+		response.sendRedirect("BoardList.jsp?page=" + totalPage);
+	// 현재 페이지가 전체 최대 페이지를 넘어갈 경우 전체 최대 페이지로 리다이렉트함
+
 %>
 
 <HTML>
@@ -41,7 +67,7 @@ List <BoardVO> mList =  service.getArticleList();
 	%>
 	<tr>
 	<td><%=vo.getSeq() %></td>
-	<td><a href='BoardView.jsp?seq=<%=vo.getSeq() %>'><%=vo.getTitle() %></a></td>
+	<td><a href='BoardView.jsp?seq=<%=vo.getSeq() %>&page=<%=pNum%>'><%=vo.getTitle() %></a></td>
 	<td><%=vo.getWriter() %></td>
 	<td><%=vo.getRegdate().substring(0, 10) %></td>
 	<td><%=vo.getCnt() %></td>
@@ -50,6 +76,11 @@ List <BoardVO> mList =  service.getArticleList();
 		<tr>
 			<td colspan="5">
 				<button type="button" onclick="location.href='BoardInputForm.jsp'">글작성</button>
+				<a href='BoardList.jsp?page=<%=pageNum-5 %>'>◀</a>
+				<% for(int i=minPage; i<=maxPage; i++){ %>
+				<a href='BoardList.jsp?page=<%=i%>'>[<%=i %>]</a>
+				<%} %>
+				<a href='BoardList.jsp?page=<%=pageNum+5 %>'>▶</a>
 			</td>
 		</tr>
 	</table>

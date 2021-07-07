@@ -5,9 +5,14 @@
 <%
 	// 게시글번호 넘겨받아
 	 String seq = request.getParameter("seq");
+	String pNum = request.getParameter("page");
 	// 서비스의 함수를 호출하여 해당 BoardVO를 넘겨받는다.
 	ViewArticleService service = ViewArticleService.getInstance();
 	BoardVO vo = service.getArticleById(seq);
+	
+	if(pNum == null)
+		pNum = "1";
+	// 페이지 값이 없을 경우 1페이지로 지정
 	
 %>    
 <!DOCTYPE html>
@@ -42,7 +47,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<button type="button" onclick="location.href='BoardList.jsp'">목록</button>
+			<button type="button" onclick="location.href='BoardList.jsp?page=<%=pNum%>'">목록</button>
 			<button type="button" onclick="location.href='BoardModifyForm.jsp?seq=<%=vo.getSeq() %>'">수정</button>
 			<button type="button" onclick="location.href='BoardDeleteForm.jsp?seq=<%=vo.getSeq() %>'">삭제</button>	
 		</td>
