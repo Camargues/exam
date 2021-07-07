@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import guest.model.MessageException;
+
 public class BoardDao
 {
 	
@@ -98,7 +100,7 @@ public class BoardDao
 	 * 리턴값 : 테이블의 한 레코드를 BoardVO 지정하고 그것을 ArrayList에 추가한 값
 	*/
 
-	public List<BoardVO> selectList() throws BoardException
+	public List<BoardVO> selectList(int firstRow, int endRow) throws BoardException
 	{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -110,10 +112,12 @@ public class BoardDao
 			con	= DriverManager.getConnection( dbUrl, dbUser, dbPass );
 			
 			// * sql 문장만들기
-			String sql = "SELECT * FROM board_ex";
+			String sql = "SELECT * FROM BOARD_EX WHERE SEQ IN (SELECT SEQ FROM(SELECT SEQ FROM (SELECT ROWNUM AS RNUM, SEQ FROM (SELECT SEQ FROM BOARD_EX ORDER BY SEQ DESC)) WHERE RNUM >=? AND RNUM <=?)) ORDER BY SEQ DESC";
 			// * 전송객체 얻어오기
 			ps = con.prepareStatement(sql);
 			// * 전송하기
+			ps.setInt(1, firstRow);
+			ps.setInt(2, endRow);
 			rs = ps.executeQuery();
 			// * 결과 받아 List<BoardVO> 변수 mList에 지정하기
 			while(rs.next()) {
@@ -267,5 +271,34 @@ public class BoardDao
 		
 	}
 	
+	public int getTotalCount() throws BoardException{
+		Connection	 		con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int count = 0;
+
+		try{
+			
+			con = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+			
+			String sql = "SELECT COUNT(*) as cnt FROM BOARD_EX";
+			
+			ps = con.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			
+			if(rs.next())
+				count = rs.getInt("cnt"); // or count = rs.getInt(1);
+			
+			return  count;
+			
+		}catch( Exception ex ){
+			throw new BoardException("게시판 ) DB에 목록 검색시 오류  : " + ex.toString() );	
+		} finally{
+			if( rs   != null ) { try{ rs.close();  } catch(SQLException ex){} }
+			if( ps   != null ) { try{ ps.close();  } catch(SQLException ex){} }
+			if( con  != null ) { try{ con.close(); } catch(SQLException ex){} }
+		}			
+	}
 	
 }
