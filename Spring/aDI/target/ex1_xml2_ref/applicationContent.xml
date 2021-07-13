@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 1. 값지정 : value -->
+	<!-- 1) setter 이용 -->
+	<bean id='member' class="ex1_xml2_ref.MemberBean">
+		<property name="name" value='홍길동'></property> <!--  setter 호출 : setName() -->
+		<property name="age"  value='33'></property> <!-- setAge() -->
+		<property name="message"><value>오늘도 즐겁게</value></property>
+	</bean>
+
+	<!-- 2) 생성자 이용 -->
+	<bean id='member2' class="ex1_xml2_ref.MemberBean">
+		<constructor-arg name='name' value='홍길자'></constructor-arg>
+		<constructor-arg name='age' value='20'/>
+		<constructor-arg name='message'><value>오늘도화이팅</value></constructor-arg>
+	</bean>	
+	
+	<!-- ===================================  -->
+	<!-- 2. 객체 지정 : ref  -->
+	<!--  1) setter 이용 -->
+	<bean id='dao' class="ex1_xml2_ref.MemberDAO">
+		<property name="member" ref='member' ></property>
+	</bean>
+	
+	<!-- 2) 생성자 이용 -->
+	<bean id='dao2' class='ex1_xml2_ref.MemberDAO'>
+		<constructor-arg name='member' ref='member2' ></constructor-arg>
+	</bean>
+	
+	
+	
+	
+	
+	
+</beans>

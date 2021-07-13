@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<!-- 1. target 빈생성 -->
+<bean id='targetBean' class="aop1_xml.MessageBeanImpl"></bean>
+
+<!-- 2. advice 빈생성 -->
+<bean id='advice' class="aop1_xml.LoggingAdvice"></bean>
+
+<!-- 3. AOP 환경설정 : (1) XML 방식 -->
+<aop:config>
+<!-- public 이면서 모든 함수 이면서 aop1_xml 클래스의 모든 클래스 중 Hello라는 이름으로 끝나는 인자 상관없이 함수 찾기 -->
+<aop:pointcut expression="execution(public * aop1_xml.*.*Hello(..))" id="pointCut"/>
+<aop:aspect ref='advice'>
+<!-- LogginAdvice에서 선언한 함수 before를 id값 pointCut으로 넘김 -->
+<!-- <aop:before method="before" pointcut-ref="pointCut"/> -->
+<aop:around method="around" pointcut-ref="pointCut"/>
+</aop:aspect>
+</aop:config>
+</beans>

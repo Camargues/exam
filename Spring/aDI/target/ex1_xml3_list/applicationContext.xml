@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id="bean" class="ex1_xml3_list.ListBean">
+     <property name="intList">
+        <list>
+           <value>23</value>
+           <value>33</value>
+           <value>44</value>
+        </list>
+     </property>
+     <property name="memberList">
+        <list>
+            <ref bean='mb1'></ref>
+            <ref bean='mb2'/>
+        </list>
+     </property>
+</bean>
+
+<bean id='mb1' class="ex1_xml3_list.MemberBean">
+   <!-- 1)setter 이용 값 지정 -->
+   <property name='name' value='안효석'></property>
+	<property name='age' value='27'></property>
+	<property name='message' value='어렵다'></property>
+</bean>
+
+<bean id='mb2' class='ex1_xml3_list.MemberBean'>
+   <!--  2)constructor 이용 값 지정 -->
+   <constructor-arg value='홍삼'></constructor-arg>
+	<constructor-arg value='22'></constructor-arg>
+	<constructor-arg value='하이'></constructor-arg>
+</bean>
+
+</beans>
