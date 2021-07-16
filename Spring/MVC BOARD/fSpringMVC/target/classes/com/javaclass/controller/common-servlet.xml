@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- ViewResolver 등록 -->
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+<!-- 접두사 지정 -->
+<property name="prefix" value="/WEB-INF/view/"></property><!-- setPrefix(value) -->
+<!-- 접미사 지정 -->
+<property name="suffix" value=".jsp"></property><!-- setSuffix(value) -->
+</bean>
+
+</beans>

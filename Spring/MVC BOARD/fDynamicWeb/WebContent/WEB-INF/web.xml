@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>fDynamicWeb</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!-- The front controller of this Spring Web application, responsible for handling all application requests -->
+	<servlet>
+		<!-- 컨트롤러 이름 -->
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<!-- 스프링 설정파일 위치 경로 지정 -->
+			<param-value>
+			/WEB-INF/springConfig/springMVC-servlet.xml
+			/WEB-INF/springConfig/common-servlet.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Map all requests to the DispatcherServlet for handling -->
+	<servlet-mapping>
+		<!-- 찾을 컨트롤러 이름 -->
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<!-- MVC 패턴 적용할 패턴 -->
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+</web-app>
