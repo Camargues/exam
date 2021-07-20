@@ -9,7 +9,7 @@ import com.javassem.dao.BoardDAOImpl;
 import com.javassem.domain.BoardVO;
 
 
-@Service("boardService")
+@Service("memberService")
 public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardDAOImpl boardDAO;
